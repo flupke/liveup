@@ -1,0 +1,8 @@
+<%= for {stage, screens} <- @stages do %>
+  <h1>{stage.name}</h1>
+  <ul>
+    <%= for screen <- screens do %>
+      <li><.link href={~p"/screens/#{screen.id}"}>{screen.name}</.link></li>
+    <% end %>
+  </ul>
+<% end %>

@@ -42,6 +42,9 @@ defmodule LiveupWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    get "/screens", PageController, :screens
+    get "/screens/:id", PageController, :screen
+
     auth_routes AuthController, Liveup.Accounts.User, path: "/auth"
     sign_out_route AuthController
 
