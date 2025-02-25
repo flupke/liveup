@@ -46,7 +46,7 @@ config :spark,
 config :liveup,
   ecto_repos: [Liveup.Repo],
   generators: [timestamp_type: :utc_datetime],
-  ash_domains: [Liveup.Accounts]
+  ash_domains: [Liveup.Schedule, Liveup.Map, Liveup.Accounts]
 
 # Configures the endpoint
 config :liveup, LiveupWeb.Endpoint,
