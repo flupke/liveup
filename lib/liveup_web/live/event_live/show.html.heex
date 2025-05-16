@@ -1,0 +1,32 @@
+<.header>
+  Event {@event.name}
+  <:subtitle>This is a event record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/admin/events/#{@event}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit event</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Name">{@event.name}</:item>
+  <:item title="Start">{@event.start}</:item>
+</.list>
+
+<.back navigate={~p"/admin/events"}>Back to events</.back>
+
+<.modal
+  :if={@live_action == :edit}
+  id="event-modal"
+  show
+  on_cancel={JS.patch(~p"/admin/events/#{@event}")}
+>
+  <.live_component
+    module={LiveupWeb.EventLive.FormComponent}
+    id={@event.id}
+    title={@page_title}
+    action={@live_action}
+    event={@event}
+    patch={~p"/admin/events/#{@event}"}
+  />
+</.modal>
