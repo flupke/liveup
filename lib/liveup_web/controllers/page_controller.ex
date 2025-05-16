@@ -3,7 +3,7 @@ defmodule LiveupWeb.PageController do
   alias Liveup.Schedule
 
   def home(conn, _params) do
-    events = Schedule.list_events_by_day() |> IO.inspect()
+    events = Schedule.list_events_by_day()
     render(conn, :home, layout: false, events: events)
   end
 
