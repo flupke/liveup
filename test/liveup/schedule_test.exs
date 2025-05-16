@@ -15,6 +15,12 @@ defmodule Liveup.ScheduleTest do
       assert Schedule.list_events() == [event]
     end
 
+    test "list_events/0 sorts events by start time" do
+      event2 = event_fixture(%{start: ~U[2025-05-15 18:58:00Z]})
+      event1 = event_fixture(%{start: ~U[2025-05-14 18:58:00Z]})
+      assert Schedule.list_events() == [event1, event2]
+    end
+
     test "get_event!/1 returns the event with given id" do
       event = event_fixture()
       assert Schedule.get_event!(event.id) == event
@@ -56,6 +62,16 @@ defmodule Liveup.ScheduleTest do
     test "change_event/1 returns a event changeset" do
       event = event_fixture()
       assert %Ecto.Changeset{} = Schedule.change_event(event)
+    end
+
+    test "list_events_by_day/0 groups events by day" do
+      event1 = event_fixture(%{start: ~U[2025-05-14 18:58:00Z]})
+      event2 = event_fixture(%{start: ~U[2025-05-15 18:58:00Z]})
+
+      assert Schedule.list_events_by_day() == [
+               {~D[2025-05-14], [event1]},
+               {~D[2025-05-15], [event2]}
+             ]
     end
   end
 end

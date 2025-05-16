@@ -23,6 +23,15 @@ defmodule Liveup.Schedule do
     |> Repo.all()
   end
 
+  def list_events_by_day do
+    list_events()
+    |> Enum.chunk_by(fn event -> DateTime.to_date(event.start) end)
+    |> Enum.map(fn day_events ->
+      first_event = hd(day_events)
+      {DateTime.to_date(first_event.start), day_events}
+    end)
+  end
+
   @doc """
   Gets a single event.
 
