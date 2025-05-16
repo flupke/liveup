@@ -18,17 +18,31 @@ defmodule Liveup.Schedule do
 
   """
   def list_events do
-    Event
-    |> order_by(asc: :start)
-    |> Repo.all()
+    Repo.all(Event)
   end
 
-  def list_events_by_day do
-    list_events()
+  def group_events_by_day_then_scene do
+    from(e in Event,
+      preload: [:scene],
+      left_join: s in assoc(e, :scene),
+      order_by: [asc: e.start, desc: s.priority],
+      select: e
+    )
+    |> Repo.all()
     |> Enum.chunk_by(fn event -> DateTime.to_date(event.start) end)
     |> Enum.map(fn day_events ->
-      first_event = hd(day_events)
-      {DateTime.to_date(first_event.start), day_events}
+      first_day_event = hd(day_events)
+      day_date = DateTime.to_date(first_day_event.start)
+
+      day_events =
+        day_events
+        |> Enum.chunk_by(fn event -> event.scene_id end)
+        |> Enum.map(fn scene_events ->
+          first_event = hd(scene_events)
+          {first_event.scene, scene_events}
+        end)
+
+      {day_date, day_events}
     end)
   end
 

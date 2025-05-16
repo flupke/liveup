@@ -2,6 +2,7 @@ defmodule LiveupWeb.EventLive.FormComponent do
   use LiveupWeb, :live_component
 
   alias Liveup.Schedule
+  alias Liveup.Locations
 
   @impl true
   def render(assigns) do
@@ -21,6 +22,7 @@ defmodule LiveupWeb.EventLive.FormComponent do
       >
         <.input field={@form[:name]} type="text" label="Name" />
         <.input field={@form[:start]} type="datetime-local" label="Start" />
+        <.input field={@form[:scene_id]} type="select" label="Scene" options={@scenes} />
         <:actions>
           <.button phx-disable-with="Saving...">Save Event</.button>
         </:actions>
@@ -31,9 +33,14 @@ defmodule LiveupWeb.EventLive.FormComponent do
 
   @impl true
   def update(%{event: event} = assigns, socket) do
+    scenes =
+      Locations.list_scenes()
+      |> Enum.map(fn scene -> {scene.name, scene.id} end)
+
     {:ok,
      socket
      |> assign(assigns)
+     |> assign(:scenes, scenes)
      |> assign_new(:form, fn ->
        to_form(Schedule.change_event(event))
      end)}

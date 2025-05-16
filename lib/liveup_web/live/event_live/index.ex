@@ -3,10 +3,17 @@ defmodule LiveupWeb.EventLive.Index do
 
   alias Liveup.Schedule
   alias Liveup.Schedule.Event
+  alias Liveup.Repo
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, stream(socket, :events, Schedule.list_events())}
+    {:ok,
+     stream(
+       socket,
+       :events,
+       Schedule.list_events()
+       |> Repo.preload(:scene)
+     )}
   end
 
   @impl true
@@ -34,7 +41,7 @@ defmodule LiveupWeb.EventLive.Index do
 
   @impl true
   def handle_info({LiveupWeb.EventLive.FormComponent, {:saved, event}}, socket) do
-    {:noreply, stream_insert(socket, :events, event)}
+    {:noreply, stream_insert(socket, :events, event |> Repo.preload(:scene))}
   end
 
   @impl true

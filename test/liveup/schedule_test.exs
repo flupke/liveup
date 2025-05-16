@@ -7,6 +7,7 @@ defmodule Liveup.ScheduleTest do
     alias Liveup.Schedule.Event
 
     import Liveup.ScheduleFixtures
+    import Liveup.LocationsFixtures
 
     @invalid_attrs %{name: nil, start: nil}
 
@@ -15,19 +16,14 @@ defmodule Liveup.ScheduleTest do
       assert Schedule.list_events() == [event]
     end
 
-    test "list_events/0 sorts events by start time" do
-      event2 = event_fixture(%{start: ~U[2025-05-15 18:58:00Z]})
-      event1 = event_fixture(%{start: ~U[2025-05-14 18:58:00Z]})
-      assert Schedule.list_events() == [event1, event2]
-    end
-
     test "get_event!/1 returns the event with given id" do
       event = event_fixture()
       assert Schedule.get_event!(event.id) == event
     end
 
     test "create_event/1 with valid data creates a event" do
-      valid_attrs = %{name: "some name", start: ~U[2025-05-15 18:58:00Z]}
+      scene = Liveup.LocationsFixtures.scene_fixture()
+      valid_attrs = %{name: "some name", start: ~U[2025-05-15 18:58:00Z], scene_id: scene.id}
 
       assert {:ok, %Event{} = event} = Schedule.create_event(valid_attrs)
       assert event.name == "some name"
@@ -64,13 +60,25 @@ defmodule Liveup.ScheduleTest do
       assert %Ecto.Changeset{} = Schedule.change_event(event)
     end
 
-    test "list_events_by_day/0 groups events by day" do
-      event1 = event_fixture(%{start: ~U[2025-05-14 18:58:00Z]})
-      event2 = event_fixture(%{start: ~U[2025-05-15 18:58:00Z]})
+    test "group_events_by_day_then_scene/0 groups events by day then scene" do
+      scene1 = scene_fixture(%{name: "scene1", priority: 1})
+      scene2 = scene_fixture(%{name: "scene2", priority: 100})
 
-      assert Schedule.list_events_by_day() == [
-               {~D[2025-05-14], [event1]},
-               {~D[2025-05-15], [event2]}
+      event1 =
+        event_fixture(%{start: ~U[2025-05-14 18:58:00Z], scene_id: scene1.id})
+        |> Repo.preload(:scene)
+
+      event2 =
+        event_fixture(%{start: ~U[2025-05-15 18:58:00Z], scene_id: scene1.id})
+        |> Repo.preload(:scene)
+
+      event3 =
+        event_fixture(%{start: ~U[2025-05-15 17:58:00Z], scene_id: scene2.id})
+        |> Repo.preload(:scene)
+
+      assert Schedule.group_events_by_day_then_scene() == [
+               {~D[2025-05-14], [{scene1, [event1]}]},
+               {~D[2025-05-15], [{scene2, [event3]}, {scene1, [event2]}]}
              ]
     end
   end

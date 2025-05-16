@@ -1,8 +1,13 @@
 <%= for {day, events} <- @events do %>
   <h1>{day}</h1>
   <ul>
-    <%= for event <- events do %>
-      <li>{DateTime.to_time(event.start)} {event.name}</li>
+    <%= for {scene, events} <- events do %>
+      <h2>{scene.name}</h2>
+      <ul>
+        <%= for event <- events do %>
+          <li>{DateTime.to_time(event.start)} {event.name}</li>
+        <% end %>
+      </ul>
     <% end %>
   </ul>
 <% end %>

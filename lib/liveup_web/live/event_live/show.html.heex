@@ -11,6 +11,7 @@
 <.list>
   <:item title="Name">{@event.name}</:item>
   <:item title="Start">{@event.start}</:item>
+  <:item title="Scene"><.name_or_none value={@event.scene} /></:item>
 </.list>
 
 <.back navigate={~p"/admin/events"}>Back to events</.back>

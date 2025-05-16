@@ -24,11 +24,18 @@ defmodule LiveupWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :admin
+
     live "/events", EventLive.Index, :index
     live "/events/new", EventLive.Index, :new
     live "/events/:id/edit", EventLive.Index, :edit
     live "/events/:id", EventLive.Show, :show
     live "/events/:id/show/edit", EventLive.Show, :edit
+
+    live "/scenes", SceneLive.Index, :index
+    live "/scenes/new", SceneLive.Index, :new
+    live "/scenes/:id/edit", SceneLive.Index, :edit
+    live "/scenes/:id", SceneLive.Show, :show
+    live "/scenes/:id/show/edit", SceneLive.Show, :edit
   end
 
   # Other scopes may use custom stacks.

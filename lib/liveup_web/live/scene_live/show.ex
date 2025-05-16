@@ -1,8 +1,7 @@
-defmodule LiveupWeb.EventLive.Show do
+defmodule LiveupWeb.SceneLive.Show do
   use LiveupWeb, :live_view
 
-  alias Liveup.Schedule
-  alias Liveup.Repo
+  alias Liveup.Locations
 
   @impl true
   def mount(_params, _session, socket) do
@@ -14,9 +13,9 @@ defmodule LiveupWeb.EventLive.Show do
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:event, Schedule.get_event!(id) |> Repo.preload(:scene))}
+     |> assign(:scene, Locations.get_scene!(id))}
   end
 
-  defp page_title(:show), do: "Show Event"
-  defp page_title(:edit), do: "Edit Event"
+  defp page_title(:show), do: "Show Scene"
+  defp page_title(:edit), do: "Edit Scene"
 end

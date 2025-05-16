@@ -8,11 +8,14 @@ defmodule Liveup.ScheduleFixtures do
   Generate a event.
   """
   def event_fixture(attrs \\ %{}) do
+    scene = Liveup.LocationsFixtures.scene_fixture()
+
     {:ok, event} =
       attrs
       |> Enum.into(%{
         name: "some name",
-        start: ~U[2025-05-15 18:58:00Z]
+        start: ~U[2025-05-15 18:58:00Z],
+        scene_id: scene.id
       })
       |> Liveup.Schedule.create_event()
 

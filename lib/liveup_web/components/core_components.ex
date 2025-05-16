@@ -673,4 +673,12 @@ defmodule LiveupWeb.CoreComponents do
   def translate_errors(errors, field) when is_list(errors) do
     for {^field, {msg, opts}} <- errors, do: translate_error({msg, opts})
   end
+
+  @doc """
+  Output the name attribute of a value, or return "none" if the value is nil.
+  """
+  attr :value, :map, required: true
+
+  def name_or_none(assigns) when is_nil(assigns.value), do: ~H"none"
+  def name_or_none(assigns), do: ~H"{assigns.value.name}"
 end

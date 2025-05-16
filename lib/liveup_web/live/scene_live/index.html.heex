@@ -1,0 +1,49 @@
+<.header>
+  Listing Scenes
+  <:actions>
+    <.link patch={~p"/admin/scenes/new"}>
+      <.button>New Scene</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="scenes"
+  rows={@streams.scenes}
+  row_click={fn {_id, scene} -> JS.navigate(~p"/admin/scenes/#{scene}") end}
+>
+  <:col :let={{_id, scene}} label="Name">{scene.name}</:col>
+  <:col :let={{_id, scene}} label="Priority">{scene.priority}</:col>
+  <:action :let={{_id, scene}}>
+    <div class="sr-only">
+      <.link navigate={~p"/admin/scenes/#{scene}"}>Show</.link>
+    </div>
+    <.link patch={~p"/admin/scenes/#{scene}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, scene}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: scene.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.back navigate={~p"/admin"}>Back to admin</.back>
+
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="scene-modal"
+  show
+  on_cancel={JS.patch(~p"/admin/scenes")}
+>
+  <.live_component
+    module={LiveupWeb.SceneLive.FormComponent}
+    id={@scene.id || :new}
+    title={@page_title}
+    action={@live_action}
+    scene={@scene}
+    patch={~p"/admin/scenes"}
+  />
+</.modal>

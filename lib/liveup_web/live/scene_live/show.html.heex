@@ -1,0 +1,32 @@
+<.header>
+  Scene {@scene.id}
+  <:subtitle>This is a scene record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/admin/scenes/#{@scene}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit scene</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Name">{@scene.name}</:item>
+  <:item title="Priority">{@scene.priority}</:item>
+</.list>
+
+<.back navigate={~p"/admin/scenes"}>Back to scenes</.back>
+
+<.modal
+  :if={@live_action == :edit}
+  id="scene-modal"
+  show
+  on_cancel={JS.patch(~p"/admin/scenes/#{@scene}")}
+>
+  <.live_component
+    module={LiveupWeb.SceneLive.FormComponent}
+    id={@scene.id}
+    title={@page_title}
+    action={@live_action}
+    scene={@scene}
+    patch={~p"/admin/scenes/#{@scene}"}
+  />
+</.modal>
