@@ -18,7 +18,9 @@ defmodule Liveup.Schedule do
 
   """
   def list_events do
-    Repo.all(Event)
+    Event
+    |> order_by(asc: :start)
+    |> Repo.all()
   end
 
   def group_events_by_day_then_scene do
