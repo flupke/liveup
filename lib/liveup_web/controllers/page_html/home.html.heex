@@ -1,13 +1,15 @@
-<%= for {day, events} <- @events do %>
-  <h1>{day}</h1>
-  <ul>
-    <%= for {scene, events} <- events do %>
-      <h2>{scene.name}</h2>
-      <ul>
-        <%= for event <- events do %>
-          <li>{DateTime.to_time(event.start)} {event.name}</li>
-        <% end %>
-      </ul>
-    <% end %>
-  </ul>
-<% end %>
+<div class="h-screen w-screen bg-cover bg-center bg-no-repeat font-Charter text-schedule text-[10vw] bg-[url('/images/background.jpg')]">
+  <%= for {day, events} <- @events do %>
+    <h1>{day}</h1>
+    <ul>
+      <%= for {scene, events} <- events do %>
+        <h2>{scene.name}</h2>
+        <ul>
+          <%= for event <- events do %>
+            <li>{DateTime.to_time(event.start)} {event.name}</li>
+          <% end %>
+        </ul>
+      <% end %>
+    </ul>
+  <% end %>
+</div>

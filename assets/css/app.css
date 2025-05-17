@@ -2,4 +2,16 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-/* This file is for your main application CSS */
+@font-face {
+  font-family: "EurostileLTStd";
+  src: url("/fonts/EurostileLTStd-DemiOblique.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Charter";
+  src: url("/fonts/Charter.ttc") format("collection");
+  font-weight: bolder;
+  font-style: normal;
+}
