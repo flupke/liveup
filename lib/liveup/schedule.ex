@@ -7,6 +7,7 @@ defmodule Liveup.Schedule do
   alias Liveup.Repo
 
   alias Liveup.Schedule.Event
+  alias Liveup.Locations.Scene
 
   @doc """
   Returns the list of events.
@@ -46,6 +47,17 @@ defmodule Liveup.Schedule do
 
       {day_date, day_events}
     end)
+  end
+
+  def list_scene_events(%Scene{} = scene) do
+    from(e in Event,
+      preload: [:scene],
+      left_join: s in assoc(e, :scene),
+      where: s.id == ^scene.id,
+      order_by: [asc: e.start],
+      select: e
+    )
+    |> Repo.all()
   end
 
   @doc """

@@ -3,7 +3,7 @@
     <h1>{day |> Cldr.Calendar.strftime("%A")}</h1>
     <ul>
       <%= for {scene, events} <- events do %>
-        <h2>{scene.name}</h2>
+        <h2><.link navigate={~p"/scene/#{scene.id}"}>{scene.name}</.link></h2>
         <ul>
           <%= for event <- events do %>
             <li>{event.start |> Calendar.strftime("%H:%M")} {event.name}</li>

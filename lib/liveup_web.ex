@@ -59,6 +59,15 @@ defmodule LiveupWeb do
     end
   end
 
+  def naked_live_view do
+    quote do
+      use Phoenix.LiveView,
+        layout: {LiveupWeb.Layouts, :root}
+
+      unquote(html_helpers())
+    end
+  end
+
   def live_component do
     quote do
       use Phoenix.LiveComponent

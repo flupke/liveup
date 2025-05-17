@@ -18,6 +18,7 @@ defmodule LiveupWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    live "/scene/:scene_id", SceneLive.CurrentUpcoming, :index
   end
 
   scope "/admin", LiveupWeb do
