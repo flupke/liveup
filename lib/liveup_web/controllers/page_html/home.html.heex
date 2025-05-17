@@ -6,7 +6,7 @@
         <h2>{scene.name}</h2>
         <ul>
           <%= for event <- events do %>
-            <li>{DateTime.to_time(event.start)} {event.name}</li>
+            <li>{event.start |> Calendar.strftime("%H:%M")} {event.name}</li>
           <% end %>
         </ul>
       <% end %>
