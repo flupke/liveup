@@ -25,7 +25,7 @@ defmodule Liveup.Schedule do
     from(e in Event,
       preload: [:scene],
       left_join: s in assoc(e, :scene),
-      order_by: [asc: e.start, desc: s.priority],
+      order_by: [asc: fragment("date(?)", e.start), desc: s.priority, asc: s.id, asc: e.start],
       select: e
     )
     |> Repo.all()
