@@ -8,6 +8,7 @@ defmodule Liveup.Schedule do
 
   alias Liveup.Schedule.Event
   alias Liveup.Locations.Scene
+  alias Liveup.Timezone
 
   @doc """
   Returns the list of events.
@@ -18,10 +19,15 @@ defmodule Liveup.Schedule do
       [%Event{}, ...]
 
   """
-  def list_events do
+  def list_events() do
     Event
     |> order_by(asc: :start)
     |> Repo.all()
+    |> Enum.map(&localize_dates/1)
+  end
+
+  defp localize_dates(event) do
+    %{event | start: Timezone.to_local(event.start)}
   end
 
   def group_events_by_day_then_scene do
@@ -32,6 +38,7 @@ defmodule Liveup.Schedule do
       select: e
     )
     |> Repo.all()
+    |> Enum.map(&localize_dates/1)
     |> Enum.chunk_by(fn event -> DateTime.to_date(event.start) end)
     |> Enum.map(fn day_events ->
       first_day_event = hd(day_events)
@@ -58,6 +65,7 @@ defmodule Liveup.Schedule do
       select: e
     )
     |> Repo.all()
+    |> Enum.map(&localize_dates/1)
   end
 
   @doc """
@@ -74,7 +82,7 @@ defmodule Liveup.Schedule do
       ** (Ecto.NoResultsError)
 
   """
-  def get_event!(id), do: Repo.get!(Event, id)
+  def get_event!(id), do: Repo.get!(Event, id) |> localize_dates()
 
   @doc """
   Creates a event.
@@ -89,9 +97,12 @@ defmodule Liveup.Schedule do
 
   """
   def create_event(attrs \\ %{}) do
-    %Event{}
-    |> Event.changeset(attrs)
-    |> Repo.insert()
+    case %Event{}
+         |> Event.changeset(attrs |> delocalize_dates())
+         |> Repo.insert() do
+      {:ok, event} -> {:ok, event |> localize_dates()}
+      other -> other
+    end
   end
 
   @doc """
@@ -107,10 +118,19 @@ defmodule Liveup.Schedule do
 
   """
   def update_event(%Event{} = event, attrs) do
-    event
-    |> Event.changeset(attrs)
-    |> Repo.update()
+    case event
+         |> Event.changeset(attrs |> delocalize_dates())
+         |> Repo.update() do
+      {:ok, event} -> {:ok, event |> localize_dates()}
+      other -> other
+    end
   end
+
+  defp delocalize_dates(%{"start" => start} = attrs) when start != "" do
+    %{attrs | "start" => Timezone.from_local(start)}
+  end
+
+  defp delocalize_dates(attrs), do: attrs
 
   @doc """
   Deletes a event.
@@ -138,6 +158,6 @@ defmodule Liveup.Schedule do
 
   """
   def change_event(%Event{} = event, attrs \\ %{}) do
-    Event.changeset(event, attrs)
+    Event.changeset(event, attrs |> delocalize_dates())
   end
 end
