@@ -7,7 +7,8 @@
         <ul class="pb-10">
           <%= for event <- events do %>
             <li>
-              {event.start |> Calendar.strftime("%H:%M")} {event.name} <sup>{event.type}</sup>
+              <span class="text-[0.5em]">{event.start |> Calendar.strftime("%H:%M")}</span> {event.name}
+              <sup>{event.type}</sup>
             </li>
           <% end %>
         </ul>
