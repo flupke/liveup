@@ -21,6 +21,7 @@ defmodule LiveupWeb.EventLive.FormComponent do
         phx-submit="save"
       >
         <.input field={@form[:name]} type="text" label="Name" />
+        <.input field={@form[:type]} type="text" label="Type" />
         <.input field={@form[:start]} type="datetime-local" label="Start" />
         <.input field={@form[:scene_id]} type="select" label="Scene" options={@scenes} />
         <:actions>

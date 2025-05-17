@@ -6,7 +6,9 @@
         <h2><.link navigate={~p"/scene/#{scene.id}"}>{scene.name}</.link></h2>
         <ul class="pb-10">
           <%= for event <- events do %>
-            <li>{event.start |> Calendar.strftime("%H:%M")} {event.name}</li>
+            <li>
+              {event.start |> Calendar.strftime("%H:%M")} {event.name} <sup>{event.type}</sup>
+            </li>
           <% end %>
         </ul>
       <% end %>

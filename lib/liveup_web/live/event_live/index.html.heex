@@ -13,6 +13,7 @@
   row_click={fn {_id, event} -> JS.navigate(~p"/admin/events/#{event}") end}
 >
   <:col :let={{_id, event}} label="Name">{event.name}</:col>
+  <:col :let={{_id, event}} label="Type">{event.type}</:col>
   <:col :let={{_id, event}} label="Start">
     {event.start |> Calendar.strftime("%d/%m/%Y %H:%M")}
   </:col>

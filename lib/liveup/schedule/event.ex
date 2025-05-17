@@ -7,6 +7,7 @@ defmodule Liveup.Schedule.Event do
   schema "events" do
     field :name, :string
     field :start, :utc_datetime
+    field :type, :string, default: ""
     belongs_to :scene, Liveup.Locations.Scene
 
     timestamps(type: :utc_datetime)
@@ -15,7 +16,7 @@ defmodule Liveup.Schedule.Event do
   @doc false
   def changeset(event, attrs) do
     event
-    |> cast(attrs, [:name, :start, :scene_id])
+    |> cast(attrs, [:name, :start, :type, :scene_id])
     |> validate_required([:name, :start, :scene_id])
     |> assoc_constraint(:scene)
   end
