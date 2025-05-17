@@ -1,10 +1,10 @@
-<div class="h-screen w-screen bg-cover bg-center bg-no-repeat font-Charter text-schedule text-[10vw] bg-[url('/images/background.jpg')]">
+<div class="min-h-screen w-full overflow-x-hidden bg-cover bg-center bg-no-repeat bg-fixed font-Charter text-schedule text-[3em] bg-[url('/images/background.jpg')] p-10">
   <%= for {day, events} <- @events do %>
-    <h1>{day |> Cldr.Calendar.strftime("%A")}</h1>
+    <h1 class="text-[1.5em]">{day |> Cldr.Calendar.strftime("%A")}</h1>
     <ul>
       <%= for {scene, events} <- events do %>
         <h2><.link navigate={~p"/scene/#{scene.id}"}>{scene.name}</.link></h2>
-        <ul>
+        <ul class="pb-10">
           <%= for event <- events do %>
             <li>{event.start |> Calendar.strftime("%H:%M")} {event.name}</li>
           <% end %>
