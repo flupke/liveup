@@ -40,9 +40,10 @@ defmodule LiveupWeb.SceneLive.CurrentUpcoming do
   defp find_current_event(all_events, utc_now) do
     all_events
     |> Enum.chunk_every(2, 1, [nil])
-    |> Enum.find([nil, nil], fn [event, _next_event] ->
+    |> Enum.reverse()
+    |> Enum.find([nil, hd(all_events)], fn [event, _next_event] ->
       compare = DateTime.compare(event.start, utc_now)
-      compare == :gt or compare == :eq
+      compare == :lt or compare == :eq
     end)
   end
 
@@ -52,11 +53,11 @@ defmodule LiveupWeb.SceneLive.CurrentUpcoming do
     <div class="h-screen w-screen bg-cover bg-center bg-no-repeat font-Charter text-schedule text-[10vw] bg-[url('/images/background.jpg')]">
       <%= if @current_event do %>
         <div class="p-10">{@current_event.name}</div>
-        <%= if @upcoming_event do %>
-          <div class="fixed bottom-0 right-0 p-10 w-full text-6xl text-right">
-            Next: {@upcoming_event.start |> Calendar.strftime("%H:%M")} {@upcoming_event.name}
-          </div>
-        <% end %>
+      <% end %>
+      <%= if @upcoming_event do %>
+        <div class="fixed bottom-0 right-0 p-10 w-full text-6xl text-right">
+          Next: {@upcoming_event.start |> Calendar.strftime("%H:%M")} {@upcoming_event.name}
+        </div>
       <% end %>
     </div>
     """
