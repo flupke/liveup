@@ -15,3 +15,25 @@
   font-weight: bolder;
   font-style: normal;
 }
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #917a44;
+}
+
+/* Ensure body specifically uses full height and inherits/sets background */
+body {
+  min-height: 100%; /* or height: 100% if html is 100% */
+}

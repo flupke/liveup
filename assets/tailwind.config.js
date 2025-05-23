@@ -105,7 +105,7 @@ module.exports = {
         ".text-schedule": {
           "-webkit-text-fill-color": theme("colors.schedule-text-fill"),
           color: theme("colors.schedule-text-fill"),
-          "-webkit-text-stroke-width": "0.1666em",
+          "-webkit-text-stroke-width": "0.25em",
           "-webkit-text-stroke-color": theme("colors.schedule-text-outline"),
           "paint-order": "stroke fill",
         },

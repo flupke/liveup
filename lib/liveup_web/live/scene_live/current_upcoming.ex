@@ -50,12 +50,19 @@ defmodule LiveupWeb.SceneLive.CurrentUpcoming do
   @impl true
   def render(assigns) do
     ~H"""
-    <div class="h-screen w-screen bg-cover bg-center bg-no-repeat font-Charter text-schedule text-[10vw] bg-[url('/images/background.jpg')]">
+    <div class="fixed inset-0 z-50 pointer-events-none">
+      <img
+        src="/images/arbres2rose.png"
+        class="absolute inset-0 w-full h-full object-cover opacity-50"
+      />
+    </div>
+
+    <div class="h-screen w-screen bg-cover bg-center bg-no-repeat bg-[#917a44] p-10">
       <%= if @current_event do %>
-        <div class="p-10">{@current_event.name}</div>
+        <div class="font-Charter text-schedule text-[5em]">{@current_event.name}</div>
       <% end %>
       <%= if @upcoming_event do %>
-        <div class="fixed bottom-0 right-0 p-10 w-full text-6xl text-right">
+        <div class="fixed bottom-0 right-0 w-full font-EurostileLTStd text-schedule-text-outline text-right text-[2em] pr-10">
           Next: {@upcoming_event.start |> Calendar.strftime("%H:%M")} {@upcoming_event.name}
         </div>
       <% end %>
