@@ -6,18 +6,19 @@ defmodule Liveup.Schedule.Event do
   @foreign_key_type :binary_id
   schema "events" do
     field :name, :string
-    field :start, :utc_datetime
+    field :start, :naive_datetime
+    field :end, :naive_datetime
     field :type, :string, default: ""
     belongs_to :scene, Liveup.Locations.Scene
 
-    timestamps(type: :utc_datetime)
+    timestamps(type: :naive_datetime)
   end
 
   @doc false
   def changeset(event, attrs) do
     event
-    |> cast(attrs, [:name, :start, :type, :scene_id])
-    |> validate_required([:name, :start, :scene_id])
+    |> cast(attrs, [:name, :start, :end, :type, :scene_id])
+    |> validate_required([:name, :start, :end, :scene_id])
     |> assoc_constraint(:scene)
   end
 end

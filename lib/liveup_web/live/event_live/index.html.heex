@@ -14,9 +14,8 @@
 >
   <:col :let={{_id, event}} label="Name">{event.name}</:col>
   <:col :let={{_id, event}} label="Type">{event.type}</:col>
-  <:col :let={{_id, event}} label="Start">
-    {event.start |> Calendar.strftime("%d/%m/%Y %H:%M")}
-  </:col>
+  <:col :let={{_id, event}} label="Start">{event.start}</:col>
+  <:col :let={{_id, event}} label="End">{event.end}</:col>
   <:col :let={{_id, event}} label="Scene">
     <.name_or_none value={event.scene} />
   </:col>

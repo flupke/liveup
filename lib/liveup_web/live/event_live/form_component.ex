@@ -23,6 +23,7 @@ defmodule LiveupWeb.EventLive.FormComponent do
         <.input field={@form[:name]} type="text" label="Name" />
         <.input field={@form[:type]} type="text" label="Type" />
         <.input field={@form[:start]} type="datetime-local" label="Start" />
+        <.input field={@form[:end]} type="datetime-local" label="End" />
         <.input field={@form[:scene_id]} type="select" label="Scene" options={@scenes} />
         <:actions>
           <.button phx-disable-with="Saving...">Save Event</.button>

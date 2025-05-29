@@ -2,7 +2,6 @@ defmodule Liveup.ScheduleTest do
   use Liveup.DataCase
 
   alias Liveup.Schedule
-  alias Liveup.Timezone
 
   describe "events" do
     alias Liveup.Schedule.Event
@@ -28,7 +27,7 @@ defmodule Liveup.ScheduleTest do
 
       assert {:ok, %Event{} = event} = Schedule.create_event(valid_attrs)
       assert event.name == "some name"
-      assert event.start == ~U[2025-05-15 18:58:00Z] |> Timezone.to_local()
+      assert event.start == ~U[2025-05-15 18:58:00Z]
     end
 
     test "create_event/1 with invalid data returns error changeset" do
@@ -41,7 +40,7 @@ defmodule Liveup.ScheduleTest do
 
       assert {:ok, %Event{} = event} = Schedule.update_event(event, update_attrs)
       assert event.name == "some updated name"
-      assert event.start == ~U[2025-05-16 18:58:00Z] |> Timezone.to_local()
+      assert event.start == ~U[2025-05-16 18:58:00Z]
     end
 
     test "update_event/2 with invalid data returns error changeset" do

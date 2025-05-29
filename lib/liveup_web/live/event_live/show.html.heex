@@ -11,7 +11,8 @@
 <.list>
   <:item title="Name">{@event.name}</:item>
   <:item title="Type">{@event.type}</:item>
-  <:item title="Start">{@event.start |> Calendar.strftime("%d/%m/%Y %H:%M")}</:item>
+  <:item title="Start">{@event.start}</:item>
+  <:item title="End">{@event.end}</:item>
   <:item title="Scene"><.name_or_none value={@event.scene} /></:item>
 </.list>
 
