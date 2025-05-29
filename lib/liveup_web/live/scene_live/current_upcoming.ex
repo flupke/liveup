@@ -27,22 +27,22 @@ defmodule LiveupWeb.SceneLive.CurrentUpcoming do
   end
 
   defp assign_current_and_upcoming_events(socket) do
-    utc_now = DateTime.utc_now()
+    now = DateTime.utc_now() |> DateTime.to_naive()
     all_events = Schedule.list_scene_events(socket.assigns.scene)
-    [current_event, upcoming_event] = find_current_event(all_events, utc_now)
+    [current_event, upcoming_event] = find_current_event(all_events, now)
 
     socket
     |> assign(:current_event, current_event)
     |> assign(:upcoming_event, upcoming_event)
-    |> assign(:utc_now, utc_now)
+    |> assign(:now, now)
   end
 
-  defp find_current_event(all_events, utc_now) do
+  defp find_current_event(all_events, now) do
     all_events
     |> Enum.chunk_every(2, 1, [nil])
     |> Enum.reverse()
     |> Enum.find([nil, hd(all_events)], fn [event, _next_event] ->
-      compare = DateTime.compare(event.start, utc_now)
+      compare = NaiveDateTime.compare(event.start, now)
       compare == :lt or compare == :eq
     end)
   end
