@@ -21,8 +21,8 @@
               <%= for event <- events do %>
                 <li>
                   <span class="text-[1em] font-EurostileLTStd text-schedule-text-outline pr-4">
-                    {event.start |> Calendar.strftime("%H:%M")} - {event.end
-                    |> Calendar.strftime("%H:%M")}
+                    {event.start |> LiveupWeb.Utils.format_event_time()} - {event.end
+                    |> LiveupWeb.Utils.format_event_time()}
                   </span>
                   <span class="text-[3.5em] font-Charter text-schedule">
                     {event.name}
