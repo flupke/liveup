@@ -27,13 +27,16 @@ defmodule Liveup.Schedule do
   def group_events_by_day_then_scene do
     from(e in Event,
       preload: [:scene],
-      left_join: s in assoc(e, :scene),
-      order_by: [asc: fragment("date(?)", e.start), desc: s.priority, asc: s.id, asc: e.start],
-      select: e
+      order_by: [asc: e.start]
     )
     |> Repo.all()
-    |> Enum.chunk_by(fn event -> NaiveDateTime.to_date(event.start) end)
+    |> Enum.chunk_by(fn event ->
+      event.start |> shift_for_grouping() |> NaiveDateTime.to_date()
+    end)
     |> Enum.map(fn day_events ->
+      day_events =
+        day_events |> Enum.sort_by(fn event -> {-event.scene.priority, event.scene_id} end)
+
       first_day_event = hd(day_events)
       day_date = NaiveDateTime.to_date(first_day_event.start)
 
@@ -47,6 +50,10 @@ defmodule Liveup.Schedule do
 
       {day_date, day_events}
     end)
+  end
+
+  defp shift_for_grouping(datetime) do
+    datetime |> NaiveDateTime.shift(hour: -7)
   end
 
   def list_scene_events(%Scene{} = scene) do
