@@ -21,12 +21,7 @@ if System.get_env("PHX_SERVER") do
 end
 
 if config_env() == :prod do
-  database_path =
-    System.get_env("DATABASE_PATH") ||
-      raise """
-      environment variable DATABASE_PATH is missing.
-      For example: /mnt/db/liveup.db
-      """
+  database_path = System.get_env("DATABASE_PATH") || "/opt/liveup/liveup.db"
 
   config :liveup, Liveup.Repo,
     database: database_path,
