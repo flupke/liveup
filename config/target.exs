@@ -88,8 +88,22 @@ config :mdns_lite,
     }
   ]
 
+# For development, we disable any cache and enable
+# debugging and code reloading.
+#
+# The watchers configuration can be used to run external
+# watchers to your application. For example, we can use it
+# to bundle .js and .css sources.
+config :liveup, LiveupWeb.Endpoint,
+  # Binding to loopback ipv4 address prevents access from other machines.
+  # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
+  http: [ip: {127, 0, 0, 1}, port: 4000],
+  check_origin: false,
+  debug_errors: true,
+  secret_key_base: "aJ2CRfdSi5j+g/BnFFO4pEfsdSbJ0DXedEuZ9KTPNcrc7hN6RL5XctlgzsGqLFs+"
+
 # Import target specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 # Uncomment to use target specific configurations
 
-# import_config "#{Mix.target()}.exs"
+import_config "#{Mix.target()}.exs"

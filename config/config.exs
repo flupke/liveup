@@ -74,6 +74,26 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+config :mix_tasks_upload_hotswap,
+  app_name: :liveup,
+  nodes: [:"liveup@nerves.local"],
+  cookie: :nerves_is_awesome
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
-import_config "#{config_env()}.exs"
+# import_config "#{config_env()}.exs"
+
+if Mix.target() == :host do
+  import_config "host.exs"
+else
+  config :liveup, LiveupWeb.Endpoint, server: true
+
+  config :liveup, Liveup.Repo,
+    adapter: Ecto.Adapters.SQLite3,
+    database: "/data/liveup.db",
+    pool_size: 10,
+    stacktrace: true,
+    show_sensitive_data_on_connection_error: true
+
+  import_config "target.exs"
+end
